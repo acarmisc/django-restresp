@@ -39,7 +39,7 @@ class RespStatus:
         type = 'UNAUTHORIZED'
 
     class NOT_FOUND:
-        msg = _('Wrong data provided')
+        msg = _('Resource not found')
         http_code = status.HTTP_404_NOT_FOUND
         type = 'NOTFOUND'
 
@@ -64,7 +64,7 @@ class Responder(object):
         self.payload = payload if isinstance(payload, list) else [payload]
         self.status = status
         self.msg = msg
-        self.errors = errors
+        self.errors = errors if isinstance(errors, list) else [errors]
         self.pagination = pagination
 
     def as_response(self, format='json'):
@@ -80,6 +80,13 @@ class Responder(object):
         response = Response(response_body, status=resp_status.http_code)
 
         return response
+
+    @staticmethod
+    def not_found(msg=None):
+        r = Responder(status=RespStatus.NOT_FOUND)
+        r.errors.append(msg)
+
+        return r.as_response()
 
 
 def _verify_mandatory(data, fields, kind='dict', all=True):
@@ -115,7 +122,7 @@ def validate_data(fields, check_all=True):
                 data = request.GET
             checks = _verify_mandatory(data, fields, all=check_all)
             if checks:
-                return Responder(status=RespStatus.MISSING_DATA, errors=checks).build()
+                return Responder(status=RespStatus.MISSING_DATA, errors=checks).as_response()
 
             return f(*args, **kwargs)
 
