@@ -98,7 +98,7 @@ def _verify_mandatory(data, fields, kind='dict', all=True):
             if not all and founds > 0:
                 break
             if not data.get(f):
-                errors.append(dict(field=f, msg='Missing %s' % f))
+                errors.append('Missing required field: %s' % f)
             else:
                 founds += 1
 
