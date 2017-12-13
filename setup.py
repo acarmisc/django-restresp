@@ -6,7 +6,7 @@ README = open(os.path.join(here, 'README.md')).read()
 
 setup(
     name='django-restresp',
-    version='0.1.4',
+    version='0.1.5',
     packages=['restresp'],
     description='Pseudo-standard responders for django DRF',
     long_description=README,
