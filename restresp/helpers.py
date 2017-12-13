@@ -40,7 +40,7 @@ class RespStatus:
 
     class NOT_FOUND:
         msg = _('Resource not found')
-        http_code = status.HTTP_404_NOT_FOUND
+        http_code = status.HTTP_204_NOT_FOUND
         type = 'NOTFOUND'
 
     class ERROR_DATA:
