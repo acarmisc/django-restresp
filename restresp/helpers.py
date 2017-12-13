@@ -30,7 +30,7 @@ class RespStatus:
 
     class NOT_FOUND:
         msg = _('Resource not found')
-        http_code = status.HTTP_204_NO_CONTENT
+        http_code = status.HTTP_200_OK
         type = 'NOTFOUND'
 
     class PARTIALLY_ACCEPTABLE:
