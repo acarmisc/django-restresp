@@ -28,6 +28,11 @@ class RespStatus:
         http_code = status.HTTP_201_CREATED
         type = 'OK'
 
+    class NOT_FOUND:
+        msg = _('Resource not found')
+        http_code = status.HTTP_204_NOT_FOUND
+        type = 'NOTFOUND'
+
     class PARTIALLY_ACCEPTABLE:
         msg = _('Response can be not reliable')
         http_code = status.HTTP_206_PARTIAL_CONTENT
@@ -37,11 +42,6 @@ class RespStatus:
         msg = _('Unauthorized resource')
         http_code = status.HTTP_401_UNAUTHORIZED
         type = 'UNAUTHORIZED'
-
-    class NOT_FOUND:
-        msg = _('Resource not found')
-        http_code = status.HTTP_204_NOT_FOUND
-        type = 'NOTFOUND'
 
     class ERROR_DATA:
         msg = _('Wrong data provided')
@@ -80,6 +80,17 @@ class Responder(object):
         response = Response(response_body, status=resp_status.http_code)
 
         return response
+
+    def response(self):
+        # Alias for as_response
+        return self.as_response()
+
+    @staticmethod
+    def error(msg=None):
+        r = Responder(status=RespStatus.GENERIC_ERROR)
+        r.errors.append(msg)
+
+        return r.as_response()
 
     @staticmethod
     def not_found(msg=None):
