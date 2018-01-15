@@ -86,6 +86,13 @@ class Responder(object):
         return self.as_response()
 
     @staticmethod
+    def unauth(msg=None):
+        r = Responder(status=RespStatus.UNAUTHORIZED)
+        r.errors.append(msg)
+
+        return r.as_response()
+
+    @staticmethod
     def error(msg=None):
         r = Responder(status=RespStatus.GENERIC_ERROR)
         r.errors.append(msg)
