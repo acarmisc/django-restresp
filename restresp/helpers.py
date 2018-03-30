@@ -53,6 +53,12 @@ class RespStatus:
         http_code = status.HTTP_400_BAD_REQUEST
         type = 'MISSING_DATA'
 
+
+    class NOT_ACCEPTABLE:
+        msg = _('data not acceptable')
+        http_code = status.HTTP_406_NOT_ACCEPTABLE
+        type = 'NOT_ACCEPTABLE'
+
     class GENERIC_ERROR:
         msg = _('generic error')
         http_code = status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -60,12 +66,17 @@ class RespStatus:
 
 
 class Responder(object):
-    def __init__(self, payload=list(), status=RespStatus.OK, msg=None, errors=[], pagination=dict()):
+
+    def __init__(self, payload=list(), status=RespStatus.OK, msg=None, errors=None, pagination=None):
         self.payload = payload if isinstance(payload, list) else [payload]
         self.status = status
         self.msg = msg
-        self.errors = errors if isinstance(errors, list) else [errors]
-        self.pagination = pagination
+        if errors:
+            self.errors = errors if isinstance(errors, list) else [errors]
+        else:
+            self.errors = []
+
+        self.pagination = pagination or dict()
 
     def as_response(self, format='json'):
         #TODO: implement format switch
